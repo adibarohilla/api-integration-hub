@@ -2,10 +2,10 @@ import ApiCard from "../ui/ApiCard";
 import GithubCard from "../ui/GithubCard";
 import WeatherCard from "../ui/WeatherCard";
 import CountryCard from "../ui/CountryCard";
+import CurrencyCard from "../ui/CurrencyCard";
 
 const apiCards = [
 
-    "Currency",
     "Crypto",
     "NASA",
 ];
@@ -17,6 +17,7 @@ function Dashboard() {
                 <GithubCard />
                 <WeatherCard />
                 <CountryCard />
+                <CurrencyCard />
 
                 {apiCards.map((card) => (
                     <ApiCard key={card} title={card} />

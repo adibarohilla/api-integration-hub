@@ -132,3 +132,11 @@ button:hover {
   object-fit: cover;
   border-radius: 6px;
 }
+
+.currency-result {
+  margin-top: 20px;
+}
+
+.currency-result h3 {
+  font-size: 18px;
+}
