@@ -140,3 +140,66 @@ button:hover {
 .currency-result h3 {
   font-size: 18px;
 }
+
+.crypto-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.crypto-header button {
+  margin-top: 0;
+}
+
+.crypto-list {
+  margin-top: 20px;
+}
+
+.crypto-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.crypto-item:last-child {
+  border-bottom: none;
+}
+
+.crypto-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.crypto-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.crypto-info h3 {
+  margin: 0;
+}
+
+.crypto-info p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.crypto-price {
+  text-align: right;
+}
+
+.crypto-price strong {
+  display: block;
+}
+
+.crypto-price span {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+}
