@@ -1,10 +1,10 @@
 import ApiCard from "../ui/ApiCard";
 import GithubCard from "../ui/GithubCard";
 import WeatherCard from "../ui/WeatherCard";
+import CountryCard from "../ui/CountryCard";
 
 const apiCards = [
 
-    "Countries",
     "Currency",
     "Crypto",
     "NASA",
@@ -16,6 +16,7 @@ function Dashboard() {
             <section className="dashboard">
                 <GithubCard />
                 <WeatherCard />
+                <CountryCard />
 
                 {apiCards.map((card) => (
                     <ApiCard key={card} title={card} />
