@@ -4,11 +4,9 @@ import WeatherCard from "../ui/WeatherCard";
 import CountryCard from "../ui/CountryCard";
 import CurrencyCard from "../ui/CurrencyCard";
 import CryptoCard from "../ui/CryptoCard";
+import NasaCard from "../ui/NasaCard";
 
-const apiCards = [
-
-    "NASA",
-];
+const apiCards = [];
 
 function Dashboard() {
     return (
@@ -19,6 +17,7 @@ function Dashboard() {
                 <CountryCard />
                 <CurrencyCard />
                 <CryptoCard />
+                <NasaCard />
 
                 {apiCards.map((card) => (
                     <ApiCard key={card} title={card} />
