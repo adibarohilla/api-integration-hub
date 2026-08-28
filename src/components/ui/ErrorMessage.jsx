@@ -1,5 +1,5 @@
 function ErrorMessage({ message }) {
-  return <p>{message}</p>;
+  return <p className="error-message" role="alert">{message}</p>;
 }
 
 export default ErrorMessage;

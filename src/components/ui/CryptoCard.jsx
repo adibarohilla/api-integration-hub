@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { Bitcoin } from "lucide-react";
 import { getCryptoPrices } from "../../services/cryptoService";
+import Loading from "./Loading";
+import ErrorMessage from "./ErrorMessage";
 
 function CryptoCard() {
     const [cryptos, setCryptos] = useState([]);
@@ -14,7 +17,7 @@ function CryptoCard() {
             const data = await getCryptoPrices();
 
             setCryptos(data);
-        } catch (err) {
+        } catch {
             setError("Unable to load crypto prices");
         } finally {
             setLoading(false);
@@ -22,20 +25,25 @@ function CryptoCard() {
     }
 
     useEffect(() => {
-        loadPrices();
+        const loadTimer = window.setTimeout(loadPrices, 0);
+        return () => window.clearTimeout(loadTimer);
     }, []);
 
     return (
         <div className="card">
             <div className="crypto-header">
-                <h2>Crypto Prices</h2>
+                <div className="card-title">
+                    <div className="card-icon"><Bitcoin size={20} /></div>
+                    <h2>Crypto Prices</h2>
+                </div>
 
                 <button onClick={loadPrices} disabled={loading}>
                     {loading ? "Refreshing..." : "Refresh"}
                 </button>
             </div>
 
-            {error && <p>{error}</p>}
+            {loading && <Loading message="Loading crypto prices..." />}
+            {error && <ErrorMessage message={error} />}
 
             {!loading && cryptos.length === 0 && !error && (
                 <p>No crypto data available.</p>
@@ -62,7 +70,7 @@ function CryptoCard() {
                                 ${crypto.current_price.toLocaleString()}
                             </strong>
 
-                            <span>
+                            <span className={crypto.price_change_percentage_24h >= 0 ? "price-positive" : "price-negative"}>
                                 {crypto.price_change_percentage_24h?.toFixed(2)}%
                             </span>
                         </div>

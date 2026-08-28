@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { Globe2, Search } from "lucide-react";
 import { searchCountry } from "../../services/countriesService";
+import Loading from "./Loading";
+import ErrorMessage from "./ErrorMessage";
 
 function CountryCard() {
     const [country, setCountry] = useState("");
@@ -23,13 +26,15 @@ function CountryCard() {
             const selectedCountry = data[0];
 
             setResult({
-                name: selectedCountry.name,
-                capital: selectedCountry.capital || "N/A",
+                name: selectedCountry.name?.common || selectedCountry.name,
+                capital: Array.isArray(selectedCountry.capital)
+                    ? selectedCountry.capital[0]
+                    : selectedCountry.capital || "N/A",
                 region: selectedCountry.region,
                 population: selectedCountry.population,
                 flag: selectedCountry.flags?.svg,
             });
-        } catch (err) {
+        } catch {
             setError("Country not found");
         } finally {
             setLoading(false);
@@ -38,27 +43,29 @@ function CountryCard() {
 
     return (
         <div className="card">
-            <h2>Countries</h2>
+            <div className="card-header">
+                <div className="card-title">
+                    <div className="card-icon"><Globe2 size={20} /></div>
+                    <h2>Countries</h2>
+                </div>
+            </div>
 
-            <input
-                type="text"
-                placeholder="Enter country"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        handleSearch();
-                    }
-                }}
-            />
+            <form onSubmit={(event) => { event.preventDefault(); handleSearch(); }}>
+                <label className="sr-only" htmlFor="country-name">Country name</label>
+                <input
+                    id="country-name"
+                    type="text"
+                    placeholder="Enter country"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                />
 
-            <button onClick={handleSearch}>
-                Search
-            </button>
+                <button type="submit" disabled={loading}><Search size={16} /> Search</button>
+            </form>
 
-            {loading && <p>Loading country...</p>}
+            {loading && <Loading message="Loading country..." />}
 
-            {error && <p>{error}</p>}
+            {error && <ErrorMessage message={error} />}
 
             {result && (
                 <div className="country-result">

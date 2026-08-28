@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { ArrowLeftRight } from "lucide-react";
 import { convertCurrency } from "../../services/currencyService";
+import Loading from "./Loading";
+import ErrorMessage from "./ErrorMessage";
 
 function CurrencyCard() {
     const [amount, setAmount] = useState("");
@@ -34,7 +37,7 @@ function CurrencyCard() {
             );
 
             setResult(convertedAmount);
-        } catch (err) {
+        } catch {
             setError("Unable to convert currency");
             setResult(null);
         } finally {
@@ -44,21 +47,27 @@ function CurrencyCard() {
 
     return (
         <div className="card">
-            <h2>Currency Converter</h2>
+            <div className="card-header">
+                <div className="card-title">
+                    <div className="card-icon"><ArrowLeftRight size={20} /></div>
+                    <h2>Currency Converter</h2>
+                </div>
+            </div>
 
-            <input
-                type="number"
-                min="0.01"
-                step="0.01"
-                placeholder="Enter amount"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-            />
+            <form onSubmit={(event) => { event.preventDefault(); handleConvert(); }}>
+                <label className="sr-only" htmlFor="currency-amount">Amount</label>
+                <input
+                    id="currency-amount"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="Enter amount"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                />
 
-            <select
-                value={from}
-                onChange={(e) => setFrom(e.target.value)}
-            >
+            <label className="sr-only" htmlFor="currency-from">Convert from</label>
+            <select id="currency-from" value={from} onChange={(e) => setFrom(e.target.value)}>
                 <option value="USD">USD</option>
                 <option value="PKR">PKR</option>
                 <option value="EUR">EUR</option>
@@ -66,10 +75,8 @@ function CurrencyCard() {
                 <option value="JPY">JPY</option>
             </select>
 
-            <select
-                value={to}
-                onChange={(e) => setTo(e.target.value)}
-            >
+            <label className="sr-only" htmlFor="currency-to">Convert to</label>
+            <select id="currency-to" value={to} onChange={(e) => setTo(e.target.value)}>
                 <option value="PKR">PKR</option>
                 <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
@@ -77,13 +84,12 @@ function CurrencyCard() {
                 <option value="JPY">JPY</option>
             </select>
 
-            <button onClick={handleConvert}>
-                Convert
-            </button>
+            <button type="submit" disabled={loading}>Convert</button>
+            </form>
 
-            {loading && <p>Converting...</p>}
+            {loading && <Loading message="Converting..." />}
 
-            {error && <p>{error}</p>}
+            {error && <ErrorMessage message={error} />}
 
             {result !== null && (
                 <div className="currency-result">

@@ -1,16 +1,63 @@
-# React + Vite
+# API Integration Hub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive React dashboard that brings several public APIs into one practical interface. Search GitHub profiles, check weather and country facts, convert currencies, view crypto prices, and explore NASA's Astronomy Picture of the Day.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- GitHub profile lookup
+- City weather with current conditions and wind speed
+- Country search with flag, capital, region, and population
+- Currency converter (USD, PKR, EUR, GBP, and JPY)
+- Live Bitcoin, Ethereum, and Solana prices
+- NASA Astronomy Picture of the Day in an accessible modal
+- Loading, error, keyboard, and focus states for every API interaction
 
-## React Compiler
+## APIs
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Feature | API |
+| --- | --- |
+| GitHub profiles | GitHub REST API |
+| Weather | Open-Meteo Geocoding and Forecast APIs |
+| Countries | Countries.dev |
+| Currency | ExchangeRate-API |
+| Crypto | CoinGecko API |
+| Astronomy | NASA APOD API |
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+git clone https://github.com/YOUR_USERNAME/api-integration-hub.git
+cd api-integration-hub
+npm install
+```
+
+Create a `.env` file from the example, then add a NASA API key. `DEMO_KEY` is suitable for local testing but has limited request capacity.
+
+```bash
+copy .env.example .env
+npm run dev
+```
+
+## Scripts
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the local development server |
+| `npm run lint` | Run ESLint |
+| `npm run build` | Create a production build |
+| `npm run preview` | Preview the production build |
+
+## Tech stack
+
+React, Vite, Axios, Lucide React, CSS, and public REST APIs.
+
+## Project ideas
+
+- Add unit tests for API services and UI states
+- Let users choose more currencies and cryptocurrencies
+- Persist recent searches in local storage
+- Deploy the dashboard to Vercel or Netlify
+
+## License
+
+This project is for personal portfolio and learning purposes.

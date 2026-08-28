@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Rocket, X, ExternalLink } from "lucide-react";
 import { getNasaPicture } from "../../services/nasaService";
+import ErrorMessage from "./ErrorMessage";
 
 function NasaCard() {
     const [picture, setPicture] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const closeButtonRef = useRef(null);
 
     async function loadPicture() {
         try {
@@ -16,15 +18,27 @@ function NasaCard() {
             const data = await getNasaPicture();
 
             setPicture(data);
-        } catch (err) {
+        } catch {
             setError("Unable to load NASA picture");
         } finally {
             setLoading(false);
         }
     }
     useEffect(() => {
-        loadPicture();
+        const loadTimer = window.setTimeout(loadPicture, 0);
+        return () => window.clearTimeout(loadTimer);
     }, []);
+
+    useEffect(() => {
+        if (!isModalOpen) return undefined;
+
+        closeButtonRef.current?.focus();
+        function handleKeyDown(event) {
+            if (event.key === "Escape") closeModal();
+        }
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [isModalOpen]);
 
     function closeModal() {
         setIsModalOpen(false);
@@ -53,7 +67,7 @@ function NasaCard() {
                         {loading ? "Loading..." : "Explore"}
                     </button>
 
-                    {error && <p>{error}</p>}
+                    {error && <ErrorMessage message={error} />}
                 </div>
             </div>
 
@@ -61,15 +75,20 @@ function NasaCard() {
                 <div
                     className="nasa-modal-overlay"
                     onClick={closeModal}
+                    role="presentation"
                 >
                     <div
                         className="nasa-modal"
                         onClick={(event) => event.stopPropagation()}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="nasa-picture-title"
                     >
                         <button
                             className="nasa-modal-close"
                             onClick={closeModal}
                             aria-label="Close NASA picture"
+                            ref={closeButtonRef}
                         >
                             <X size={20} />
                         </button>
@@ -108,7 +127,7 @@ function NasaCard() {
                         </div>
 
                         <div className="nasa-modal-details">
-                            <h2>{picture.title}</h2>
+                            <h2 id="nasa-picture-title">{picture.title}</h2>
 
                             <p className="nasa-date">
                                 {picture.date}

@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { GitBranch, Search, ExternalLink } from "lucide-react";
 import { getGithubUser } from "../../services/githubService";
+import Loading from "./Loading";
+import ErrorMessage from "./ErrorMessage";
 
 function GithubCard() {
     const [username, setUsername] = useState("");
@@ -22,7 +25,7 @@ function GithubCard() {
 
             setUser(data);
 
-        } catch (err) {
+        } catch {
 
             setUser(null);
             setError("User not found");
@@ -38,30 +41,34 @@ function GithubCard() {
     return (
         <div className="card">
 
-            <h2>GitHub</h2>
+            <div className="card-header">
+                <div className="card-title">
+                    <div className="card-icon">
+                      <GitBranch size={20} />
+                    </div>
 
+                    <h2>GitHub</h2>
+                </div>
+            </div>
 
-            <input
-                type="text"
-                placeholder="Search username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        handleSearch();
-                    }
-                }}
-            />
+            <form onSubmit={(event) => { event.preventDefault(); handleSearch(); }}>
+                <label className="sr-only" htmlFor="github-username">GitHub username</label>
+                <input
+                    id="github-username"
+                    type="text"
+                    placeholder="Search username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
 
-            <button onClick={handleSearch}>
-                Search
-            </button>
+                <button type="submit" disabled={loading}>
+                    <Search size={16} />
+                    Search
+                </button>
+            </form>
 
-
-            {loading && <p>Loading...</p>}
-
-
-            {error && <p>{error}</p>}
+            {loading && <Loading message="Finding GitHub profile..." />}
+            {error && <ErrorMessage message={error} />}
 
 
             {user && (
@@ -96,10 +103,11 @@ function GithubCard() {
                     <a
                         href={user.html_url}
                         target="_blank"
+                        rel="noopener noreferrer"
                     >
                         View Profile
+                        <ExternalLink size={15} />
                     </a>
-
                 </div>
 
             )}
